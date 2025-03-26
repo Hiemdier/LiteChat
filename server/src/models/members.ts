@@ -16,8 +16,8 @@ export class Member extends Model<
 > {
   declare id: CreationOptional<number>;
   declare role: CreationOptional<string>;
-  declare userId: ForeignKey<User['id']>;
-  declare chatroomId: ForeignKey<Chatroom['id']>;
+  declare UserId: ForeignKey<User['id']>;
+  declare ChatroomId: ForeignKey<Chatroom['id']>;
 }
 
 export function MembersFactory(sequelize: Sequelize) {
