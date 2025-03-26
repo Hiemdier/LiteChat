@@ -38,18 +38,30 @@ router.get('/', async(req: Request, res: Response) => {
 
 // PUT /messages/:id - Modifies the content of a chat message 
 router.put('/:id', async(req: Request, res: Response) => {
-    const { id } = req.params;
+
+    if (!req.user) {
+        return res.status(401);
+    }
+
+    const messageId = +req.params.id;
+    const userId = +req.body.id;
     const { content } = req.body;
 
     try {
-        const message = await Message.findByPk(id);
-        if (message) {
-            // How do I update a message?
-            await message.update({content: content});
-            return res.json(message);
-        } else {
+        const message = await Message.findByPk(messageId);
+
+        if (!message) {
             return res.status(404).json({ message: 'Message not found' });
         }
+
+        if (!(userId === message.userId)) {
+            return res.status(403).json({message: 'User lacks permissions'});
+        }
+
+        // At this point, we verified the message exists and the user who is trying to edit the message created it.
+        await message.update({content: content});
+        return res.json(message);
+
     } catch (error: any) {
         return res.status(500).json({ message: error.message });
     }
@@ -59,6 +71,10 @@ router.put('/:id', async(req: Request, res: Response) => {
 
 // DELETE /messages/:id - Deletes a chat message
 router.delete('/:id', async(req: Request, res: Response) => {
+    // TODO: Right now, this method allows anyone to delete a message.
+    // Ideally, it should only allow either the author of the message or
+    // a moderator of the chatroom that the message was created in to delete it.
+    
     const { id } = req.params;
 
     try {

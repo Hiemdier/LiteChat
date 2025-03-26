@@ -1,6 +1,6 @@
 import express from 'express';
 import type { Request, Response } from 'express';
-import { Chatroom, Message } from '../../models/index.js';
+import { Chatroom } from '../../models/index.js';
 
 
 const router = express.Router();
@@ -46,6 +46,39 @@ router.post('/create', async (req: Request, res: Response) => {
     } catch (error: any) {
         return res.status(500).json({ message: error.message });
     }
+});
+
+// PUT /chatrooms/:id - Update the name/owner of a chatroom
+router.put('/:id', async (req: Request, res: Response) => {
+  // TODO: This needs to be updated later down the line.
+  // For now, it only allows the owner of a chatroom to update its information
+  if (!req.user) {
+    return res.status(401);
+  }
+
+  const chatId = +req.params.id;
+  const userId = +req.user.id;
+
+  const { name, owner } = req.body;
+
+  try {
+    const chatroom = await Chatroom.findByPk(chatId);
+    
+    if (!chatroom) {
+      return res.status(404).json({message: 'Chatroom not found'});
+    }
+
+    if (!(chatroom.owner === userId)) {
+      return res.status(403).json({message: 'User lacks permissions'});
+    }
+
+    // At this point, we found the chatroom AND verified that the user can edit the chatroom. Let's update the info
+    await chatroom.update({name: name, owner: owner});
+    return res.json(chatroom);
+
+  } catch (error: any) {
+    return res.status(500).json({message: error.message});
+  }
 });
 
 // DELETE /chatrooms/:id - Delete a chatroom by its id
