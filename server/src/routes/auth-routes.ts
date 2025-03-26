@@ -24,11 +24,14 @@ export const login = async (req: Request, res: Response) => {
     return res.status(401).json({ message: 'Authentication failed' });
   }
 
+  console.log(`Logged in as user ${user.username}. ID ${user.id}`);
+
   // Get the secret key from environment variables
   const secretKey = process.env.JWT_SECRET_KEY || '';
 
   // Generate a JWT token for the authenticated user
-  const token = jwt.sign({ username }, secretKey, { expiresIn: '1h' });
+  const id = user.id;
+  const token = jwt.sign({ id, username }, secretKey, { expiresIn: '1h' });
   return res.json({ token });  // Send the token as a JSON response
 };
 

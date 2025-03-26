@@ -1,11 +1,11 @@
 import { DataTypes, Sequelize, Model, Optional, ForeignKey } from 'sequelize';
-import type { User } from './user.js';
+import { User } from './user.js';
 
 // Define the attributes for the Chatroom model
 interface ChatroomAttributes {
     id: number;
     name: string;
-    owner: number;
+    owner: number | null;
 }
 
 // Define the optional attributes for creating a new User
@@ -37,7 +37,7 @@ export function ChatroomFactory(sequelize: Sequelize): typeof Chatroom {
       },
       owner: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
             model: 'users',
             key: 'id'
@@ -53,3 +53,5 @@ export function ChatroomFactory(sequelize: Sequelize): typeof Chatroom {
 
   return Chatroom;  // Return the initialized Chatroom model
 }
+
+// Establishes relationship between Chatroom and User tables (important, but I'm not quite sure how...)

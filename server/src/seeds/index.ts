@@ -1,4 +1,5 @@
 import { seedUsers } from './user-seeds.js';
+import { seedChatrooms } from './chatroom-seeds.js';
 import sequelize from '../config/connection.js';
 
 const seedAll = async (): Promise<void> => {
@@ -9,6 +10,9 @@ const seedAll = async (): Promise<void> => {
     await seedUsers();
     console.log('\n----- USERS SEEDED -----\n');
     
+    await seedChatrooms();
+    console.log('\n----- CHATROOMS SEEDED -----\n');
+
     process.exit(0);
   } catch (error) {
     console.error('Error seeding database:', error);
