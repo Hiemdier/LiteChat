@@ -20,7 +20,7 @@ export class Member extends Model<
   declare chatroomId: ForeignKey<Chatroom['id']>;
 }
 
-export function MembersFactory(sequelize: Sequelize) {
+export function MemberFactory(sequelize: Sequelize) {
     Member.init(
         {
             id: {
