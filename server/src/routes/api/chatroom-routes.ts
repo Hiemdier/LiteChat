@@ -1,6 +1,6 @@
 import express from 'express';
 import type { Request, Response } from 'express';
-import { Chatroom } from '../../models/index.js';
+import { User, Chatroom } from '../../models/index.js';
 
 
 const router = express.Router();
