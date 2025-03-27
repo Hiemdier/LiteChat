@@ -20,7 +20,7 @@ router.get('/', async(_req: Request, res: Response) => {
 });
 
 // GET /messages - Get a chat message by id 
-router.get('/', async(req: Request, res: Response) => {
+router.get('/:id', async(req: Request, res: Response) => {
     const { id } = req.params;
 
     try {
