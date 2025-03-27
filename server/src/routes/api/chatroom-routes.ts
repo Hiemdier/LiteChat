@@ -1,5 +1,14 @@
 import express from 'express';
 import type { Request, Response } from 'express';
+
+// Extend the Request interface to include the 'user' property
+declare global {
+  namespace Express {
+    interface Request {
+      user?: { id: string }; // Adjust the type of 'id' as per your application's user model
+    }
+  }
+}
 import { Chatroom } from '../../models/index.js';
 
 
@@ -40,8 +49,13 @@ router.post('/create', async (req: Request, res: Response) => {
     
     try {
         const name = req.body.name;
+<<<<<<< HEAD
         const { id } = req.user;
         const newChatroom = await Chatroom.create({ name, id });
+=======
+        const owner = Number(req.user.id);
+        const newChatroom = await Chatroom.create({ name, owner });
+>>>>>>> e8993c79c5f8b0ec18dbc5c89f43c4fe8236fe8c
         return res.status(201).json(newChatroom);
     } catch (error: any) {
         return res.status(500).json({ message: error.message });
