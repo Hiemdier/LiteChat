@@ -18,9 +18,26 @@ const router = express.Router();
 router.get('/', async (_req: Request, res: Response) => {
   try {
     const chatrooms = await Chatroom.findAll();
-    res.json(chatrooms);
+    return res.json(chatrooms);
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
+  }
+});
+
+// GET /chatrooms/:id - Get a chatroom by id
+router.get('/:id', async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    const chatroom = await Chatroom.findByPk(id);
+    if (chatroom) {
+      return res.json(chatroom);
+    } else {
+      return res.status(404).json({message: 'Chatroom not found'});
+    }
+    
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message });
   }
 });
 
@@ -32,7 +49,7 @@ router.post('/create', async (req: Request, res: Response) => {
   
   try {
     const { name } = req.body;
-    const owner = req.user.id;
+    const owner = Number(req.user.id);
     
     // Check if chatroom name already exists
     const existingRoom = await Chatroom.findOne({ where: { name } });
@@ -87,7 +104,7 @@ router.delete('/:id', async (req: Request, res: Response) => {
     }
 
     // Only the owner can delete the chatroom
-    if (chatroom.owner !== req.user.id) {
+    if (chatroom.owner !== Number(req.user.id)) {
       return res.status(403).json({ message: 'Forbidden: Only owner can delete chatroom' });
     }
 

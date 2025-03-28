@@ -1,6 +1,7 @@
 import { seedUsers } from './user-seeds.js';
 import { seedChatrooms } from './chatroom-seeds.js';
 import sequelize from '../config/connection.js';
+//import { seedMessages } from './message-seeds.js';
 
 const seedAll = async (): Promise<void> => {
   try {
@@ -12,6 +13,9 @@ const seedAll = async (): Promise<void> => {
     
     await seedChatrooms();
     console.log('\n----- CHATROOMS SEEDED -----\n');
+
+    // await seedMessages();
+    // console.log('\n----- MESSAGES SEEDED -----\n');
 
     process.exit(0);
   } catch (error) {
