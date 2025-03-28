@@ -49,7 +49,7 @@ router.post('/create', async (req: Request, res: Response) => {
   
   try {
     const { name } = req.body;
-    const owner = req.user.id;
+    const owner = Number(req.user.id);
     
     // Check if chatroom name already exists
     const existingRoom = await Chatroom.findOne({ where: { name } });
@@ -104,7 +104,7 @@ router.delete('/:id', async (req: Request, res: Response) => {
     }
 
     // Only the owner can delete the chatroom
-    if (chatroom.owner !== req.user.id) {
+    if (chatroom.owner !== Number(req.user.id)) {
       return res.status(403).json({ message: 'Forbidden: Only owner can delete chatroom' });
     }
 
