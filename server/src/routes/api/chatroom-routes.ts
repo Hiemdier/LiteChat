@@ -1,14 +1,8 @@
 import express from 'express';
 import type { Request, Response } from 'express';
 
-// Extend the Request interface to include the 'user' property
-declare global {
-  namespace Express {
-    interface Request {
-      user?: { id: string }; // Adjust the type of 'id' as per your application's user model
-    }
-  }
-}
+
+
 import { Chatroom } from '../../models/index.js';
 import { User } from '../../models/user.js';
 
@@ -24,6 +18,23 @@ router.get('/', async (_req: Request, res: Response) => {
   }
 });
 
+// GET /chatrooms/:id - Get a chatroom by id
+router.get('/:id', async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    const chatroom = await Chatroom.findByPk(id);
+    if (chatroom) {
+      return res.json(chatroom);
+    } else {
+      return res.status(404).json({message: 'Chatroom not found'});
+    }
+    
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message });
+  }
+});
+
 // POST /chatrooms/create - Create a new chatroom
 router.post('/create', async (req: Request, res: Response) => {
   if (!req.user) {
@@ -32,7 +43,7 @@ router.post('/create', async (req: Request, res: Response) => {
   
   try {
     const { name } = req.body;
-    const owner = req.user.id;
+    const owner = Number(req.user.id);
     
     // Check if chatroom name already exists
     const existingRoom = await Chatroom.findOne({ where: { name } });
@@ -87,7 +98,7 @@ router.delete('/:id', async (req: Request, res: Response) => {
     }
 
     // Only the owner can delete the chatroom
-    if (chatroom.owner !== req.user.id) {
+    if (chatroom.owner !== Number(req.user.id)) {
       return res.status(403).json({ message: 'Forbidden: Only owner can delete chatroom' });
     }
 

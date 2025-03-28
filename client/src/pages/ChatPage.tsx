@@ -1,5 +1,3 @@
-
-
 // Boiling down a react component to its basics, we have a function
 // The function returns "HTML", and we do an export default on it
 
@@ -10,9 +8,52 @@
 // To keep things simple, we can build things entirely within pages first, and then 
 // subdivide and put things in components later for tidiness
 
-const Columns = () => {
+import { useState, useEffect, useLayoutEffect } from "react";
+import { getChatrooms } from "../api/chatroomAPI";
+import auth from '../utils/auth';
+import ChatList from "../components/ChatList";
+
+const ChatPage = () => {
+    
+    const [chatrooms, setChatrooms] = useState([]); // I need to define an interface for this...
+    const [error, setError] = useState(false);
+    const [loginCheck, setLoginCheck] = useState(false);
+
+    useEffect(() => {
+        if (loginCheck) {
+            fetchChatrooms();
+
+            // TODO: Probably need something here for fetching the chat messages of an active chat?
+        }
+    }, [loginCheck]);
+
+    useLayoutEffect(() => {
+        checkLogin();
+    }, []);
+
+    const checkLogin = () => {
+        if (auth.loggedIn()) {
+            setLoginCheck(true);
+        }
+    };
+
+    const fetchChatrooms = async () => {
+        try {
+            const data = await getChatrooms();
+            setChatrooms(data)
+        } catch (err) {
+            console.error('Failed to retrieve chatrooms:', err);
+            setError(true);
+        }
+    }
+
+    if (error) {
+        return <ErrorPage />;
+    }
 
     return (
+        <>
+        <ChatList chatrooms={chatrooms} />
         <div className="container mx-auto p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="bg-white p-6 rounded-lg outline outline-black">
@@ -26,7 +67,8 @@ const Columns = () => {
                 </div>
             </div>
         </div>
+        </>
     );
 };
 
-export default Columns;
+export default ChatPage;

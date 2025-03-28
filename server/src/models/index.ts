@@ -1,7 +1,6 @@
 import sequelize from '../config/connection.js'
 import { ChatroomFactory } from './chatroom.js';
 import { UserFactory } from './user.js';
-<<<<<<< HEAD
 import { MemberFactory } from './member.js';
 import { MessageFactory } from './message.js';
 
@@ -9,30 +8,22 @@ const User = UserFactory(sequelize);
 const Chatroom = ChatroomFactory(sequelize);
 const Member = MemberFactory(sequelize);
 const Message = MessageFactory(sequelize);
-=======
-import {MembersFactory} from './members.js';
-// import {MessageFactory} from './message.js';
-
-const User = UserFactory(sequelize);
-const Chatroom = ChatroomFactory(sequelize);
-const Member = MembersFactory(sequelize);
-// const Message = MessageFactory(sequelize);
->>>>>>> e8993c79c5f8b0ec18dbc5c89f43c4fe8236fe8c
 
 // Associations for Chatroom
 Chatroom.belongsTo(User, { foreignKey: 'owner', onDelete: 'SET NULL' });
 User.hasMany(Chatroom, { foreignKey: 'owner' });
 
-User.hasMany(Member, { foreignKey: 'UserId', onDelete: 'CASCADE' });
-Member.belongsTo(User);
+// Associations for Member
+User.hasMany(Member, { foreignKey: 'userId', onDelete: 'CASCADE' });
+Member.belongsTo(User, { foreignKey: 'userId'});
 
-Chatroom.hasMany(Member, { foreignKey: 'ChatroomId', onDelete: 'CASCADE' });
-Member.belongsTo(Chatroom);
+Chatroom.hasMany(Member, { foreignKey: 'chatId', onDelete: 'CASCADE' });
+Member.belongsTo(Chatroom, { foreignKey: 'chatId'});
 
-// Chatroom.hasMany(Message, { foreignKey: 'chatId', onDelete: 'CASCADE' });
-// Message.belongsTo(Chatroom);
-
-// User.hasMany(Message, { foreignKey: 'userId', onDelete: "SET NULL" });
-// Message.belongsTo(User);
+// Associations for Message
+User.hasMany(Message, { foreignKey: 'userId', onDelete: 'SET NULL' });
+Message.belongsTo(User, { foreignKey: 'userId' });
+Chatroom.hasMany(Message, { foreignKey: 'chatId', onDelete: 'CASCADE' });
+Message.belongsTo(Chatroom, { foreignKey: 'chatId' });
 
 export { User, Chatroom, Member, Message };

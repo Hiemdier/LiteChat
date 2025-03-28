@@ -1,31 +1,28 @@
-import { DataTypes, Sequelize, Model, Optional, ForeignKey } from 'sequelize';
+import {
+  Model,
+  type InferAttributes,
+  type InferCreationAttributes,
+  type CreationOptional,
+  DataTypes,
+  type Sequelize,
+  type ForeignKey,
+} from 'sequelize';
 import { User } from './user.js';
 import { Chatroom } from './chatroom.js';
 
-// Define the attributes for the User model
-interface MessageAttributes {
-  id: number;
-  content: string;
-  userId: number; // This is a foreign key
-  chatId: number; // This is a foreign key
-}
+// Define the Message model
 
-// Define the optional attributes for creating a new message
-interface MessageCreationAttributes extends Optional<MessageAttributes, 'id'> {}
-
-// Define the Message class extending Sequelize's Model
-export class Message extends Model<MessageAttributes, MessageCreationAttributes> implements MessageAttributes {
-  public id!: number;
-  public content!: string;
+export class Message extends Model<
+  InferAttributes<Message>, 
+  InferCreationAttributes<Message>> 
+  {
+  declare id: CreationOptional<number>;
+  declare content: string;
   declare userId: ForeignKey<User['id']>;
   declare chatId: ForeignKey<Chatroom['id']>;
-
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
 }
-
 // Define the MessageFactory function to initialize the Message model
-export function MessageFactory(sequelize: Sequelize): typeof Message {
+export function MessageFactory(sequelize: Sequelize) {
   Message.init(
     {
       id: {
@@ -34,24 +31,8 @@ export function MessageFactory(sequelize: Sequelize): typeof Message {
         primaryKey: true,
       },
       content: {
-        type: DataTypes.STRING(200), //Is this how I set string lengths?
+        type: DataTypes.STRING(200),
         allowNull: false
-      },
-      userId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'users',
-            key: 'id'
-        }
-      },
-      chatId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'chatrooms',
-            key: 'id'
-        }
       },
     },
     {
@@ -59,6 +40,6 @@ export function MessageFactory(sequelize: Sequelize): typeof Message {
       sequelize,            // The Sequelize instance that connects to PostgreSQL
     }
   );
-
+  
   return Message;  // Return the initialized User model
 }
