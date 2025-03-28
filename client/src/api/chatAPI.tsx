@@ -1,17 +1,19 @@
 //import {Chat Interface Method} from "../interfaces/chatroomInterface";
+import Auth from '../utils/auth';
 
 const retrieveChatrooms = async () => {
     const response = await fetch("/api/chatrooms", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${Auth.getToken()}`
         },
     });
     if (!response.ok) {
         throw new Error("Failed to fetch chatrooms");
     }
     const data = await response.json();
-    return data.chatrooms;
+    return data;
 }
 
 const retrieveChatroomsById = async (id: number) => {

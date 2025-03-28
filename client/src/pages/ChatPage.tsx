@@ -9,9 +9,10 @@
 // subdivide and put things in components later for tidiness
 
 import { useState, useEffect, useLayoutEffect } from "react";
-import { getChatrooms } from "../api/chatroomAPI";
+import { retrieveChatrooms } from "../api/chatAPI";
 import auth from '../utils/auth';
 import ChatList from "../components/ChatList";
+import ErrorPage from "./ErrorPage";
 
 const ChatPage = () => {
     
@@ -39,7 +40,7 @@ const ChatPage = () => {
 
     const fetchChatrooms = async () => {
         try {
-            const data = await getChatrooms();
+            const data = await retrieveChatrooms();
             setChatrooms(data)
         } catch (err) {
             console.error('Failed to retrieve chatrooms:', err);
