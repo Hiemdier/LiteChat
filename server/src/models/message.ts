@@ -20,8 +20,6 @@ export class Message extends Model<
   declare content: string;
   declare userId: ForeignKey<User['id']>;
   declare chatId: ForeignKey<Chatroom['id']>;
-  declare createdAt: CreationOptional<Date>;
-  declare updatedAt: CreationOptional<Date>;
 }
 // Define the MessageFactory function to initialize the Message model
 export function MessageFactory(sequelize: Sequelize) {
@@ -36,13 +34,10 @@ export function MessageFactory(sequelize: Sequelize) {
         type: DataTypes.STRING(200),
         allowNull: false
       },
-      createdAt: '',
-      updatedAt: ''
     },
     {
       tableName: 'messages',  // Name of the table in PostgreSQL
       sequelize,            // The Sequelize instance that connects to PostgreSQL
-      timestamps: true,    // Enable timestamps
     }
   );
   

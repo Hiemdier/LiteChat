@@ -21,10 +21,9 @@ Chatroom.hasMany(Member, { foreignKey: 'chatId', onDelete: 'CASCADE' });
 Member.belongsTo(Chatroom, { foreignKey: 'chatId'});
 
 // Associations for Message
-Chatroom.hasMany(Message, { foreignKey: 'chatId', onDelete: 'CASCADE' });
-Message.belongsTo(Chatroom, {foreignKey: 'chatId'});
-
-User.hasMany(Message, { foreignKey: 'userId', onDelete: "SET NULL" });
-Message.belongsTo(User, {foreignKey: 'userId'});
+User.hasMany(Message, { foreignKey: 'userId', onDelete: 'SET NULL' });
+Message.belongsTo(User, { foreignKey: 'userId' });
+Chatroom.hasMany(Message, { foreignKey: 'chatId', onDelete: 'SET NULL' });
+Message.belongsTo(Chatroom, { foreignKey: 'chatId' });
 
 export { User, Chatroom, Member, Message };
