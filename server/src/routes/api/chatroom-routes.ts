@@ -1,5 +1,14 @@
 import express from 'express';
 import type { Request, Response } from 'express';
+
+// Extend the Request interface to include the 'user' property
+declare global {
+  namespace Express {
+    interface Request {
+      user?: { id: string }; // Adjust the type of 'id' as per your application's user model
+    }
+  }
+}
 import { Chatroom } from '../../models/index.js';
 import { User } from '../../models/user.js';
 
@@ -54,6 +63,7 @@ router.post('/join', async (req: Request, res: Response) => {
     const chatroom = await Chatroom.findByPk(chatroomId);
     if (!chatroom) {
       return res.status(404).json({ message: 'Chatroom not found' });
+
     }
 
     // Simulate adding user to chatroom (needs real implementation)

@@ -41,4 +41,15 @@ const router = Router();
 // POST /login - Login a user
 router.post('/login', login);  // Define the login route
 
+// POST /users - Create a new user
+router.post('/create', async (req: Request, res: Response) => {
+  const { username, email, password } = req.body;
+  try {
+    const newUser = await User.create({ username, email, password });
+    res.status(201).json(newUser);
+  } catch (error: any) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
 export default router;  // Export the router instance
