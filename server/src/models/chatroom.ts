@@ -1,5 +1,6 @@
 import { DataTypes, Sequelize, Model, Optional, ForeignKey } from 'sequelize';
 import { User } from './user.js';
+import { Message } from './message.js';
 
 // Define the attributes for the Chatroom model
 interface ChatroomAttributes {
@@ -19,7 +20,27 @@ export class Chatroom extends Model<ChatroomAttributes, ChatroomCreationAttribut
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+
+  // Associations
+  public static associate() {
+    this.belongsTo(User, { foreignKey: 'owner', as: 'chatOwner' });
+    this.hasMany(Message, { foreignKey: 'chatroomId', as: 'messages' });
+  }
+
+    // Helper method to create a chatroom
+  public static async createChatroom(name: string, ownerId: number) {
+    return await this.create({ name, owner: ownerId });
+  }
+
+  // Helper method to delete a chatroom
+  public static async deleteChatroom(chatroomId: number) {
+    return await this.destroy({ where: { id: chatroomId } });
+  }
 }
+
+
+
+
 
 // Define the ChatroomFactory function to initialize the User model
 export function ChatroomFactory(sequelize: Sequelize): typeof Chatroom {
@@ -34,24 +55,24 @@ export function ChatroomFactory(sequelize: Sequelize): typeof Chatroom {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
+        validate: {
+          notEmpty: true,
+        },
       },
       owner: {
         type: DataTypes.INTEGER,
         allowNull: true,
         references: {
-            model: 'users',
-            key: 'id'
+          model: 'users',
+          key: 'id'
         }
       },
-
     },
     {
-      tableName: 'chatrooms',  // Name of the table in PostgreSQL
-      sequelize,            // The Sequelize instance that connects to PostgreSQL
+      sequelize,
+      tableName: 'chatrooms',
     }
   );
 
   return Chatroom;  // Return the initialized Chatroom model
 }
-
-// Establishes relationship between Chatroom and User tables (important, but I'm not quite sure how...)
