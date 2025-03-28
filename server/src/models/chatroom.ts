@@ -62,6 +62,10 @@ export function ChatroomFactory(sequelize: Sequelize): typeof Chatroom {
       owner: {
         type: DataTypes.INTEGER,
         allowNull: true,
+        references: {
+          model: 'users',
+          key: 'id'
+        }
       },
     },
     {
