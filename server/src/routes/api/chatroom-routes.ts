@@ -11,7 +11,14 @@ const router = express.Router();
 // GET /chatrooms - Get all chatrooms
 router.get('/', async (_req: Request, res: Response) => {
   try {
-    const chatrooms = await Chatroom.findAll();
+    const chatrooms = await Chatroom.findAll({
+      include: {
+          model: User,
+          as: 'ownerDetails',
+          required: false
+        },
+      nest: true
+    });
     res.json(chatrooms);
   } catch (error: any) {
     res.status(500).json({ message: error.message });

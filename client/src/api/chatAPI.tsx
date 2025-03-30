@@ -13,6 +13,7 @@ const retrieveChatrooms = async () => {
         throw new Error("Failed to fetch chatrooms");
     }
     const data = await response.json();
+    console.log(data);
     return data;
 }
 

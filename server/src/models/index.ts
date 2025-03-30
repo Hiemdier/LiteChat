@@ -10,8 +10,8 @@ const Member = MemberFactory(sequelize);
 const Message = MessageFactory(sequelize);
 
 // Associations for Chatroom
-Chatroom.belongsTo(User, { foreignKey: 'owner', onDelete: 'SET NULL' });
-User.hasMany(Chatroom, { foreignKey: 'owner' });
+Chatroom.belongsTo(User, { foreignKey: 'owner', as: 'ownerDetails', onDelete: 'SET NULL' });
+User.hasMany(Chatroom, { foreignKey: 'owner', as: 'chatrooms' });
 
 // Associations for Member
 User.hasMany(Member, { foreignKey: 'userId', onDelete: 'CASCADE' });
