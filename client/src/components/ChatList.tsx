@@ -7,18 +7,21 @@ import { retrieveMessages } from "../api/msgAPI";
 // Define the props for the component
 interface ChatListProps {
     chatrooms: ChatroomData[] | null; // users can be an array of UserData objects or null
-    updateMessages: any
+    updateMessages: any,
+    updateActiveChatroom: any
 }
 
-const ChatList: React.FC<ChatListProps> = ({ chatrooms, updateMessages }) => {
+const ChatList: React.FC<ChatListProps> = ({ chatrooms, updateMessages, updateActiveChatroom }) => {
 
     const fetchMessages = async (chatId: number) => {
         try {
             const data = await retrieveMessages(chatId);
             updateMessages(data);
+            updateActiveChatroom(chatId);
         } catch(err) {
             console.error('Failed to retrieve chat messages:', err);
             updateMessages([]);
+            updateActiveChatroom(-1);
         }
     }
 
