@@ -3,6 +3,9 @@
 import { useState, useEffect, useLayoutEffect, FormEvent, ChangeEvent } from "react";
 import type { MessageData } from "../interfaces/MessageData";
 import { retrieveMessages, postNewMessage } from "../api/msgAPI";
+// import { io } from "socket.io-client";
+
+// const socket = io("http://localhost:")
 
 interface ChatroomProps {
     messages: MessageData[];
@@ -43,12 +46,13 @@ const Chatroom: React.FC<ChatroomProps> = ({ messages, chatId, updateMessages })
     };
 
     return (<>
+    <div className="h-192 max-h-192 overflow-auto p-3">
     {messages && messages.map((msg) => (
-        <div key={msg.id} className='bg-white p-3 mb-5 bg-gray-400 rounded-lg outline outline-black'>
+        <div key={msg.id} className='shrink bg-gray-200 p-3 mb-3 bg-gray-400 rounded-lg outline outline-black'>
             <h4>{msg.ownerDetails.username}</h4>
             <p>{msg.content}</p>
         </div>
-    ))}
+    ))}</div>
 
     {/* Allow the user to input messages to add to the chatroom */}
     {chatId > 0 && <div className='form-container'>

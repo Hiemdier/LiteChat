@@ -3,6 +3,6 @@ export interface MessageData {
     content: string | null;
     ownerDetails: {
       username: string
-    }
+    };
     chatId: number | null;
   }
