@@ -1,6 +1,7 @@
 import express from 'express';
 import type { Request, Response } from 'express';
-import { Message } from '../../models/index.js';
+import { User, Message } from '../../models/index.js';
+// I need the User model so I can also retrieve the usernames of message authors
 
 const router = express.Router();
 
@@ -85,7 +86,15 @@ router.get('/chatroom/:id', async (req: Request, res: Response) => {
     const limit = Number(req.query.limit) || -1; // Determine the maximum number of messages to pull
 
     try {
-        const messages = await Message.findAll({ where: { chatId: id } });
+        const messages = await Message.findAll({ 
+            where: { chatId: id },
+            include: {
+                model: User,
+                as: 'ownerDetails',
+                required: false
+            },
+            nest: true
+        });
 
         if (limit > 0) {
             messages.splice(0, Math.max(messages.length - limit, 0));

@@ -1,14 +1,8 @@
 import express from 'express';
 import type { Request, Response } from 'express';
 
-// Extend the Request interface to include the 'user' property
-declare global {
-  namespace Express {
-    interface Request {
-      user?: { id: string }; // Adjust the type of 'id' as per your application's user model
-    }
-  }
-}
+
+
 import { Chatroom } from '../../models/index.js';
 import { User } from '../../models/user.js';
 
@@ -17,10 +11,17 @@ const router = express.Router();
 // GET /chatrooms - Get all chatrooms
 router.get('/', async (_req: Request, res: Response) => {
   try {
-    const chatrooms = await Chatroom.findAll();
-    return res.json(chatrooms);
+    const chatrooms = await Chatroom.findAll({
+      include: {
+          model: User,
+          as: 'ownerDetails',
+          required: false
+        },
+      nest: true
+    });
+    res.json(chatrooms);
   } catch (error: any) {
-    return res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 });
 
