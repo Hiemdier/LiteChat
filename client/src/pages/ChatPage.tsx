@@ -26,6 +26,9 @@ import ErrorPage from "./ErrorPage";
 import { ChatroomData } from "../interfaces/ChatroomData";
 import { MessageData } from "../interfaces/MessageData";
 
+// For implementation with the socket
+import socket from '../utils/socket.js';
+
 const ChatPage = () => {
     // TODO: I want the ability to post chat messages to a chatroom
     
@@ -35,6 +38,7 @@ const ChatPage = () => {
     const [messages, setMessages] = useState<MessageData[]>([]);
     const [error, setError] = useState(false);
     const [loginCheck, setLoginCheck] = useState(false);
+    const [isConnected, setIsConnected] = useState(socket.connected);
 
     useEffect(() => {
         if (loginCheck) {
@@ -44,16 +48,54 @@ const ChatPage = () => {
     }, [loginCheck]);
 
     useEffect(() => {
-        console.log(`Current chatroom: ${activeChatroom}`);
-        const chat = async () => {
-            try {
-                const data = await retrieveChatroomsById(activeChatroom);
-                setActiveChatName(data.name);
-            } catch(error) {
-                console.error("Error fetching data:", error);
-            };
+        // Debug: Log socket connection state
+        console.log("🔄 Checking socket connection...");
+        console.log("📡 Socket connected:", socket.connected);
+
+        const handleConnect = () => {
+            console.log("✅ Socket connected:", socket.id);
+            setIsConnected(true);
         };
-        chat();
+
+        const handleDisconnect = () => {
+            console.log("❌ Socket disconnected");
+            setIsConnected(false);
+        };
+
+        socket.on("connect", handleConnect);
+        socket.on("disconnect", handleDisconnect);
+
+        socket.on("connect_error", (err) => {
+            console.error("Socket connection error:", err);
+        });
+
+        return () => {
+            socket.off("connect", handleConnect);
+            socket.off("disconnect", handleDisconnect);
+        };
+    }, []);
+
+    useEffect(() => {
+        console.log(`Current chatroom: ${activeChatroom}`);
+        console.log("Socket connected?", socket.connected);
+
+        if (!activeChatroom || (activeChatroom < 1) ) {
+            return;
+        };
+
+        socket.emit("joinRoom", activeChatroom);
+
+        // Listen for incoming messages
+        const handleReceiveMessage = (message: MessageData) => {
+            setMessages((prev) => [...prev, message]);
+        };
+        socket.on("receiveMessage", handleReceiveMessage);
+
+        return () => {
+            socket.emit("leaveRoom", activeChatroom); // Leave previous room
+            socket.off("receiveMessage", handleReceiveMessage); // Clean up event listener
+        };
+        
     }, [activeChatroom]);
 
     useLayoutEffect(() => {
@@ -79,6 +121,11 @@ const ChatPage = () => {
         }
     };
 
+    const sendMessage = (content: string, chatId: number) => {
+        console.log(`ChatPage is sending a message: ${content}, ${chatId}`);
+        socket.emit("sendMessage", { content, chatId });
+    };
+
     if (error) {
         return <ErrorPage />;
     };
@@ -97,7 +144,8 @@ const ChatPage = () => {
                 <div className="bg-white p-6 rounded-lg outline outline-black md:col-span-2">
                     {/* Display messages from the active chatroom */}
                     <h2 className="text-xl font-bold text-gray-800">{activeChatName}</h2>
-                    <Chatroom messages={messages} updateMessages={setMessages} chatId={activeChatroom}/>
+                    <Chatroom messages={messages} sendMessage={sendMessage} chatId={activeChatroom}/>
+                    <p>Socket connected: {isConnected ? "✅ Yes" : "❌ No"}</p>
                 </div>
             </div>
         </div>
