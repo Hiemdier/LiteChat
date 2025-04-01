@@ -123,7 +123,7 @@ const ChatPage = () => {
 
     const sendMessage = (content: string, chatId: number) => {
         console.log(`ChatPage is sending a message: ${content}, ${chatId}`);
-        socket.emit("sendMessage", { content, chatId });
+        socket.emit("sendMessage", { content: content, chatId: chatId });
     };
 
     if (error) {

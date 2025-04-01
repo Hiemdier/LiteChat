@@ -16,7 +16,7 @@ const Chatroom: React.FC<ChatroomProps> = ({ messages, chatId, sendMessage }) =>
     // This method needs to get modified to align with our socket usage...
     const handleSendMessage = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        sendMessage(chatId, draftMessage);
+        sendMessage(draftMessage, chatId);
         setDraftMessage("");
     };
 

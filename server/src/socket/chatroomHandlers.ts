@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import { Message } from "../models/index.js";
+import { Message, User } from "../models/index.js";
 
 export const handleChatroomEvents = (io: Server, socket: Socket) => {
     socket.on("joinRoom", (roomId: string) => {
@@ -13,13 +13,37 @@ export const handleChatroomEvents = (io: Server, socket: Socket) => {
     socket.on("sendMessage", async (data) => {
 
         console.log('Socket received sendMessage!');
-        
-        // Our socket middleware contains the userId we need, but the socket emission has the message content and chatId
-        const { content, chatId } = data;
 
-        const message = await Message.create({ content, chatId: chatId, userId: socket.data.user.id });
+        // Our socket middleware contains the userId we need, but the socket emission has the message content and chatId
+        const content = data.content;
+        const chatId = data.chatId;
+
+        console.log(`Creating message for room ${chatId} by user ${socket.data.user.id} with content: ${content}`);
+
+        const message = await Message.create({ content: content, chatId: chatId, userId: socket.data.user.id });
+
+        console.log('Socket created message!');
 
         // Broadcast message to all clients in the room
-        io.to(chatId).emit("receiveMessage", message);
+        const messageInfo = await Message.findByPk(message.id, {
+            include: {
+                model: User,
+                as: 'ownerDetails',
+                required: false
+            },
+            nest: true
+        });
+        io.to(chatId).emit("receiveMessage", messageInfo);
+
+        console.log('Socket broadcasted message!');
     });
 };
+
+// export interface MessageData {
+//     id: number | null;
+//     content: string | null;
+//     ownerDetails: {
+//       username: string
+//     };
+//     chatId: number | null;
+//   }
