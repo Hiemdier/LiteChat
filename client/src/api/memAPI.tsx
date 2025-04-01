@@ -11,7 +11,7 @@ const retrieveMembers = async () => {
         throw new Error("Failed to fetch members");
     }
     const data = await response.json();
-    return data.members;
+    return data;
 }
 
 const retrieveMembersById = async (id: number) => {
@@ -25,7 +25,7 @@ const retrieveMembersById = async (id: number) => {
         throw new Error("Failed to fetch member by ID");
     }
     const data = await response.json();
-    return data.member;
+    return data;
 }
 
 const createMember = async (name: string) => {
@@ -40,7 +40,7 @@ const createMember = async (name: string) => {
         throw new Error("Failed to create member");
     }
     const data = await response.json();
-    return data.member;
+    return data;
 }
 
 const deleteMember = async (id: number) => {
@@ -69,7 +69,7 @@ const updateMember = async (id: number, name: string) => {
         throw new Error("Failed to update member");
     }
     const data = await response.json();
-    return data.member;
+    return data;
 }
 
 export { retrieveMembers, retrieveMembersById, createMember, deleteMember, updateMember };
