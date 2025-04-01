@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 // Define the interface for the JWT payload
 interface JwtPayload {
   username: string;
-  id: number; // Change id to string to match the expected type
+  id: number; // Change id to number to match the expected type
 }
 
 // Middleware function to authenticate JWT token
@@ -23,7 +23,7 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
 
   try {
     const decoded = jwt.verify(token, secretKey) as JwtPayload;
-    req.user = decoded; // Ensure req.user is set before calling next()
+    req.user = { ...decoded, id: decoded.id.toString() }; // Convert id to string before assigning
     return next(); // ✅ Only proceed if token verification succeeds
   } catch (error) {
     return res.status(403).json({ message: 'Invalid or expired token' });
