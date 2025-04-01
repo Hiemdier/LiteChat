@@ -20,7 +20,15 @@ router.get('/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
 
     try {
-        const message = await Message.findByPk(id);
+        const message = await Message.findByPk(id, {
+            include: {
+                model: User,
+                as: 'ownerDetails',
+                required: false
+            },
+            nest: true
+        });
+        // const message = await Message.findAll();
         if (message) {
             return res.json(message);
         } else {

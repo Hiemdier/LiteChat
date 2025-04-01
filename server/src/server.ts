@@ -9,14 +9,17 @@ import routes from './routes/index.js';
 
 // We need these imports for real-time chat listening
 import { Server } from 'socket.io';
-// import { Message } from './models/index.js';
-// import http from 'http';
-// import cors from 'cors';
 import { createServer } from 'node:http';
+import { setupSocket } from './socket/index.js';
 
 const app = express();
 const server = createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
 
 const PORT = process.env.PORT || 3001;
 
@@ -26,9 +29,7 @@ app.use(express.json());
 app.use(routes);
 
 // io stuffs
-io.on('connection', (_socket) => {
-  console.log(`a user connected!`);
-});
+setupSocket(io);
 
 sequelize.sync({force: forceDatabaseRefresh}).then(() => {
   server.listen(PORT, () => {

@@ -13,50 +13,54 @@ router.get("/chatrooms/history", authenticateToken, async (req, res) => {
             return res.status(401).json({ error: "Unauthorized" });
         }
 
-        // Pagination (default to page 1, limit 10)
-        const limit = Math.max(parseInt(req.query.limit as string) || 10, 1);
-        const page = Math.max(parseInt(req.query.page as string) || 1, 1);
-        const offset = (page - 1) * limit;
+//         // Pagination (default to page 1, limit 10)
+//         const limit = Math.max(parseInt(req.query.limit as string) || 10, 1);
+//         const page = Math.max(parseInt(req.query.page as string) || 1, 1);
+//         const offset = (page - 1) * limit;
 
-        // Fetch chatrooms with Sequelize
-        const rooms = await Chatroom.findAll({
-            include: [
-                {
-                    model: Member,
-                    where: { user_id: userId },
-                    attributes: [], // Exclude Member attributes
-                },
-                {
-                    model: Message,
-                    attributes: ["content"],
-                    order: [["created_at", "DESC"]],
-                    limit: 1,
-                },
-            ],
-            attributes: [
-                "id",
-                "name",
-                "created_at",
-                [
-                    // Subquery for member count
-                    Sequelize.literal(`(
-                        SELECT COUNT(*)
-                        FROM room_members AS rm
-                        WHERE rm.room_id = chatroom.id
-                    )`),
-                    "member_count",
-                ],
-            ],
-            order: [["created_at", "DESC"]],
-            limit,
-            offset,
-        });
+//         // Fetch chatrooms with Sequelize
+//         const rooms = await Chatroom.findAll({
+//             include: [
+//                 {
+//                     model: Member,
+//                     where: { user_id: userId },
+//                     attributes: [], // Exclude Member attributes
+//                 },
+//                 {
+//                     model: Message,
+//                     attributes: ["content"],
+//                     order: [["created_at", "DESC"]],
+//                     limit: 1,
+//                 },
+//             ],
+//             attributes: [
+//                 "id",
+//                 "name",
+//                 "created_at",
+//                 [
+//                     // Subquery for member count
+//                     Sequelize.literal(`(
+//                         SELECT COUNT(*)
+//                         FROM room_members AS rm
+//                         WHERE rm.room_id = chatroom.id
+//                     )`),
+//                     "member_count",
+//                 ],
+//             ],
+//             order: [["created_at", "DESC"]],
+//             limit,
+//             offset,
+//         });
 
-        return res.json({ rooms });
-    } catch (error) {
-        console.error("Error fetching rooms:", error);
-        return res.status(500).json({ error: "Internal Server Error" });
-    }
-});
+//         return res.json({ rooms });
+//     } catch (error) {
+//         console.error("Error fetching rooms:", error);
+//         return res.status(500).json({ error: "Internal Server Error" });
+//     }
+// });
 
+<<<<<<< HEAD:server/src/routes/api/future features/chatroom-history.ts
+// export default router;
+=======
 export {router as historyRouter};
+>>>>>>> c95f03bf85eca8f502b8568b394726474522b83e:server/src/routes/api/chatroom-history.ts
