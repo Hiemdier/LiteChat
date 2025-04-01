@@ -9,9 +9,6 @@ import routes from './routes/index.js';
 
 // We need these imports for real-time chat listening
 import { Server } from 'socket.io';
-// import { Message } from './models/index.js';
-// import http from 'http';
-// import cors from 'cors';
 import { createServer } from 'node:http';
 import { setupSocket } from './socket/index.js';
 
