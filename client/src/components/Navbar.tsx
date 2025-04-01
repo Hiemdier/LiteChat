@@ -21,7 +21,7 @@ const Navbar = () => {
   return (
     <div className="display-flex justify-space-between align-center py-2 px-5 mint-green">
       <h1>
-        Authentication Review
+        LiteChat
       </h1>
       <div>
         {
