@@ -4,6 +4,7 @@ import { chatroomRouter } from './chatroom-routes.js';
 import { memberRouter } from './member-routes.js';
 import { messageRouter } from './message-routes.js';
 import { historyRouter } from './chatroom-history.js';
+import { friendRouter } from './friends-routes.js';
 
 const router = Router();
 
@@ -12,5 +13,6 @@ router.use('/chatrooms', chatroomRouter);
 router.use('/members', memberRouter);
 router.use('/messages', messageRouter);
 router.use('/history', historyRouter);
+router.use ('/friends', friendRouter);
 
 export default router;
