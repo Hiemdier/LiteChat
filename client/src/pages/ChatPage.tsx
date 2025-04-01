@@ -12,7 +12,6 @@ import { useState, useEffect, useLayoutEffect } from "react";
 
 // API functions
 import { retrieveChatrooms, retrieveChatroomsById } from "../api/chatAPI";
-import { postMessage } from "../api/msgAPI";
 
 // Authenticate calls to api routes...
 import auth from '../utils/auth';

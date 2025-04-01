@@ -58,6 +58,7 @@ const Chatroom: React.FC<ChatroomProps> = ({ messages, chatId, sendMessage }) =>
             name='msgContent'
             value={draftMessage || ''}
             onChange={handleChange}
+            placeholder="Type your message here"
           />
         </div>
         <div className="form-group">

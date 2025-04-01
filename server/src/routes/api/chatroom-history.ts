@@ -1,17 +1,17 @@
-// import { Router } from "express";
-// import { authenticateToken } from "../../middleware/auth";
-// import { Chatroom, Member, Message } from "../../models"; // Assuming Sequelize models are defined here
-// import { Sequelize } from "sequelize";
+import { Router } from "express";
+import { authenticateToken } from "../../middleware/auth.js"; // Assuming you have a middleware for authentication
+import { Chatroom, Member, Message } from "../../models/index.js"; // Assuming Sequelize models are defined here
+import { Sequelize } from "sequelize";
 
-// const router = Router();
+ const router = Router();
 
-// // GET /api/chatrooms - Get rooms the user is a member of
-// router.get("/chatrooms", authenticateToken, async (req, res) => {
-//     try {
-//         const userId = req.user?.id;
-//         if (!userId) {
-//             return res.status(401).json({ error: "Unauthorized" });
-//         }
+// GET /api/chatrooms/history - Get rooms the user is a member of
+router.get("/chatrooms/history", authenticateToken, async (req, res) => {
+    try {
+        const userId = req.user?.id;
+        if (!userId) {
+            return res.status(401).json({ error: "Unauthorized" });
+        }
 
 //         // Pagination (default to page 1, limit 10)
 //         const limit = Math.max(parseInt(req.query.limit as string) || 10, 1);
@@ -59,4 +59,8 @@
 //     }
 // });
 
+<<<<<<< HEAD:server/src/routes/api/future features/chatroom-history.ts
 // export default router;
+=======
+export {router as historyRouter};
+>>>>>>> c95f03bf85eca8f502b8568b394726474522b83e:server/src/routes/api/chatroom-history.ts
