@@ -1,10 +1,12 @@
 //import {Friend Method} from "../interfaces/FrindInterface";
+import Auth from '../utils/auth';
 
 const retrieveFriendsById = async (id: number) => {
     const response = await fetch(`/api/friends/${id}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${Auth.getToken()}`
         },
     });
     if (!response.ok) {
@@ -19,6 +21,7 @@ const createFriend = async (name: string) => {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${Auth.getToken()}`
         },
         body: JSON.stringify({ name }),
     });
@@ -34,6 +37,7 @@ const updateFriend = async (id: number, name: string) => {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${Auth.getToken()}`
         },
         body: JSON.stringify({ name }),
     });
@@ -49,6 +53,7 @@ const deleteFriend = async (id: number) => {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${Auth.getToken()}`
         },
     });
     if (!response.ok) {
@@ -57,3 +62,5 @@ const deleteFriend = async (id: number) => {
     const data = await response.json();
     return data;
 }
+
+export { retrieveFriendsById, createFriend, updateFriend, deleteFriend };
