@@ -1,28 +1,28 @@
 import express from 'express';
 import type { Request, Response } from 'express';
-import { Member } from '../../models/index.js';
+import { Friend } from '../../models/index.js';
 const router = express.Router();
 
-// GET /members - Get all members
+// GET /Friend - Get all Friend
 router.get('/', async (_req: Request, res: Response) => {
     try {
-        const members = await Member.findAll();
-        res.json(members);
+        const friends = await Friend.findAll();
+        res.json(friends);
     } catch (error: any) {
         res.status(500).json({ message: error.message });
     }
 }
 );
 
-// GET /members/:id - Get a member by id
+// GET /Friend/:id - Get a Friend by id
 router.get('/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
-        const member = await Member.findByPk(id);
-        if (member) {
-            res.json(member);
+        const friend = await Friend.findByPk(id);
+        if (friend) {
+            res.json(friend);
         } else {
-            res.status(404).json({ message: 'Member not found' });
+            res.status(404).json({ message: 'Friends not found' });
         }
     } catch (error: any) {
         res.status(500).json({ message: error.message });
@@ -30,47 +30,45 @@ router.get('/:id', async (req: Request, res: Response) => {
 }
 );
 
-// POST /members/create - Create a new member
+// POST /Friend/create - Create a new Friend
 router.post('/create', async (req: Request, res: Response) => {
-    const { role, ChatroomId, UserId } = req.body;
+    const { friendId, chatroomId, userId } = req.body;
     try {
-        const newMember = await Member.create({ role, ChatroomId, UserId });
-        res.status(201).json(newMember);
+        const newFriend = await Friend.create({ friendId, chatroomId, userId });
+        res.status(201).json(newFriend);
     } catch (error: any) {
         res.status(400).json({ message: error.message });
     }
 }
 );
 
-// PUT /members/:id - Update a member by id
+// PUT /Friend/:id - Update a Friend by id
 router.put('/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
-    const { role} = req.body;
+    const { friendId, chatroomId, userId } = req.body;
     try {
-        const member = await Member.findByPk(id);
-        if (member) {
-            member.role = role;
-            await member.save();
-            res.json(member);
+        const friend = await Friend.findByPk(id);
+        if (friend) {
+            await friend.update({ friendId, chatroomId, userId });
+            res.json(friend);
         } else {
-            res.status(404).json({ message: 'Member not found' });
+            res.status(404).json({ message: 'Friend not found' });
         }
     } catch (error: any) {
-        res.status(500).json({ message: error.message });
+        res.status(400).json({ message: error.message });
     }
-}
-);
+});
 
-// DELETE /members/:id - Delete a member by id
+// DELETE /Friend/:id - Delete a Friend by id
 router.delete('/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
-        const member = await Member.findByPk(id);
-        if (member) {
-            await member.destroy();
-            res.json({ message: 'Member deleted' });
+        const friend = await Friend.findByPk(id);
+        if (friend) {
+            await friend.destroy();
+            res.json({ message: 'Friend deleted' });
         } else {
-            res.status(404).json({ message: 'Member not found' });
+            res.status(404).json({ message: 'Friend not found' });
         }
     } catch (error: any) {
         res.status(500).json({ message: error.message });
@@ -78,4 +76,4 @@ router.delete('/:id', async (req: Request, res: Response) => {
 }
 );
 
-export { router as memberRouter };
+export { router as friendRouter };
