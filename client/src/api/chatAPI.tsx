@@ -1,16 +1,19 @@
-//import {Chat Interface Method} from "../interfaces/chatroomInterface";
+import { ChatroomData } from "../interfaces/ChatroomData";
+import Auth from '../utils/auth';
 
-const retrieveChatrooms = async () => {
+const retrieveChatrooms = async (): Promise<ChatroomData[]> => {
     const response = await fetch("/api/chatrooms", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${Auth.getToken()}`
         },
     });
     if (!response.ok) {
         throw new Error("Failed to fetch chatrooms");
     }
     const data = await response.json();
+    console.log(data);
     return data;
 }
 
@@ -19,12 +22,14 @@ const retrieveChatroomsById = async (id: number) => {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${Auth.getToken()}`
         },
     });
     if (!response.ok) {
         throw new Error("Failed to fetch chatroom by ID");
     }
     const data = await response.json();
+    return data;
     return data;
 }
 
