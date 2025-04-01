@@ -3,11 +3,13 @@ import { ChatroomFactory } from './chatroom.js';
 import { UserFactory } from './user.js';
 import { MemberFactory } from './member.js';
 import { MessageFactory } from './message.js';
+import { FriendFactory } from './friends.js';
 
 const User = UserFactory(sequelize);
 const Chatroom = ChatroomFactory(sequelize);
 const Member = MemberFactory(sequelize);
 const Message = MessageFactory(sequelize);
+const Friend = FriendFactory(sequelize);
 
 // Associations for Chatroom
 Chatroom.belongsTo(User, { foreignKey: 'owner', onDelete: 'SET NULL' });
@@ -26,4 +28,12 @@ Message.belongsTo(User, { foreignKey: 'userId' });
 Chatroom.hasMany(Message, { foreignKey: 'chatId', onDelete: 'CASCADE' });
 Message.belongsTo(Chatroom, { foreignKey: 'chatId' });
 
-export { User, Chatroom, Member, Message };
+// Associations for Friend
+User.hasMany(Friend, { foreignKey: 'userId', onDelete: 'CASCADE' });
+Friend.belongsTo(User, { foreignKey: 'userId' });
+User.hasMany(Friend, { foreignKey: 'friendId', onDelete: 'CASCADE' });
+Friend.belongsTo(User, { foreignKey: 'friendId' });
+Chatroom.hasMany(Friend, { foreignKey: 'chatroomId', onDelete: 'CASCADE' });
+Friend.belongsTo(Chatroom, { foreignKey: 'chatroomId' });
+
+export { User, Chatroom, Member, Message, Friend };
