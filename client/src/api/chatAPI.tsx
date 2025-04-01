@@ -30,6 +30,7 @@ const retrieveChatroomsById = async (id: number) => {
     }
     const data = await response.json();
     return data;
+    return data;
 }
 
 const createChatroom = async (name: string) => {
@@ -44,7 +45,7 @@ const createChatroom = async (name: string) => {
         throw new Error("Failed to create chatroom");
     }
     const data = await response.json();
-    return data.chatroom;
+    return data;
 }
 const deleteChatroom = async (id: number) => {
     const response = await fetch(`/api/chatrooms/${id}`, {
@@ -71,7 +72,7 @@ const updateChatroom = async (id: number, name: string) => {
         throw new Error("Failed to update chatroom");
     }
     const data = await response.json();
-    return data.chatroom;
+    return data;
 }
 
 export { retrieveChatrooms, retrieveChatroomsById, createChatroom, deleteChatroom, updateChatroom };

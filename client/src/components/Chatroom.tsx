@@ -41,7 +41,7 @@ const Chatroom: React.FC<ChatroomProps> = ({ messages, chatId, updateMessages })
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
+        const { value } = e.target;
         setDraftMessage(value);
     };
 
@@ -65,6 +65,7 @@ const Chatroom: React.FC<ChatroomProps> = ({ messages, chatId, updateMessages })
             name='msgContent'
             value={draftMessage || ''}
             onChange={handleChange}
+            placeholder="Type your message here"
           />
         </div>
         <div className="form-group">
