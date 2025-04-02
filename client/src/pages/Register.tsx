@@ -33,8 +33,23 @@ const Register = () => {
 
         try {
             const response = await register(registerData);
+
+            if (response.error) {
+                if (response.error === 'Username already in use') {
+                    alert('Username is already in use. Please choose another one.');
+                } else if (response.error === 'Email already in use') {
+                    alert('Email is already in use. Please use another email.');
+                } else {
+                    alert('Registration failed. Please try again.');
+                }
+                return;
+            }
+
             alert('Registration successful! You can now log in.');
             console.log('Form submitted:', response);
+
+            // Redirect to login page
+            window.location.href = '/login';
         } catch (error) {
             console.error('Registration failed:', error);
             alert('Registration failed. Please try again.');
