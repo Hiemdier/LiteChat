@@ -1,6 +1,6 @@
 // As a general comment, this component is responsible for the retrieval of messages from the given active chatroom.
 
-import { useState, useEffect, useLayoutEffect, FormEvent, ChangeEvent } from "react";
+import { useState, ChangeEvent } from "react";
 import type { MessageData } from "../interfaces/MessageData";
 
 interface ChatroomProps {
