@@ -11,7 +11,7 @@
 import { useState, useEffect, useLayoutEffect } from "react";
 
 // API functions
-import { retrieveChatrooms, retrieveChatroomsById } from "../api/chatAPI";
+import { retrieveChatrooms} from "../api/chatAPI";
 
 // Authenticate calls to api routes...
 import auth from '../utils/auth';
@@ -33,7 +33,7 @@ const ChatPage = () => {
     
     const [chatrooms, setChatrooms] = useState<ChatroomData[]>([]);
     const [activeChatroom, setActiveChatroom] = useState<number>(-1);
-    const [activeChatName, setActiveChatName] = useState<string>('');
+    const [activeChatName] = useState<string>('');
     const [messages, setMessages] = useState<MessageData[]>([]);
     const [error, setError] = useState(false);
     const [loginCheck, setLoginCheck] = useState(false);
