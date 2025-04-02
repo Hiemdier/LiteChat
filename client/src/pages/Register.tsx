@@ -69,6 +69,7 @@ const Register = () => {
                         name="username"
                         value={registerData.username}
                         onChange={handleChange}
+                        placeholder="Enter your username"
                         required
                     />
                 </div>
@@ -81,6 +82,7 @@ const Register = () => {
                         name="email"
                         value={registerData.email}
                         onChange={handleChange}
+                        placeholder="Enter your email"
                         required
                     />
                 </div>
@@ -93,6 +95,7 @@ const Register = () => {
                         name="password"
                         value={registerData.password}
                         onChange={handleChange}
+                        placeholder="Enter your password"
                         required
                     />
                 </div>
@@ -105,6 +108,7 @@ const Register = () => {
                         name="confirmPassword"
                         value={registerData.confirmPassword}
                         onChange={handleChange}
+                        placeholder="Confirm your password"
                         required
                     />
                 </div>

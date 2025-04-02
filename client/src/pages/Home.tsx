@@ -1,19 +1,17 @@
 import { useState, useEffect, useLayoutEffect } from "react";
-import { retrieveUsers } from "../api/userAPI";
-import type { UserData } from "../interfaces/UserData";
 import ErrorPage from "./ErrorPage";
-import UserList from '../components/Users';
 import auth from '../utils/auth';
+import {useNavigate} from 'react-router-dom';
 
 const Home = () => {
 
-    const [users, setUsers] = useState<UserData[]>([]);
-    const [error, setError] = useState(false);
+    const navigate = useNavigate();
+    const [error] = useState(false);
     const [loginCheck, setLoginCheck] = useState(false);
 
     useEffect(() => {
         if (loginCheck) {
-            fetchUsers();
+            navigate('/chat');
         }
     }, [loginCheck]);
 
@@ -27,16 +25,6 @@ const Home = () => {
         }
     };
 
-    const fetchUsers = async () => {
-        try {
-            const data = await retrieveUsers();
-            setUsers(data)
-        } catch (err) {
-            console.error('Failed to retrieve tickets:', err);
-            setError(true);
-        }
-    }
-
     if (error) {
         return <ErrorPage />;
     }
@@ -47,11 +35,13 @@ const Home = () => {
                 !loginCheck ? (
                     <div className='login-notice'>
                         <h1>
-                            Login to view all your friends!
+                            Login to view chatrooms!
                         </h1>
                     </div>
                 ) : (
-                    <UserList users={users} />
+                    <div className="home-container">
+                        <h1>Welcome to LiteChat!</h1>
+                    </div>
                 )}
         </>
     );
