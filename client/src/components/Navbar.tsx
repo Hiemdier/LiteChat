@@ -27,20 +27,26 @@ const Navbar = () => {
         {
           // Conditional rendering based on loginCheck state
           !loginCheck ? (
-            // Render login button if user is not logged in
-            <button className="btn" type='button'>
-              <Link to='/login'>Login</Link>
-            </button>
+            <>
+              {/* Render register and login buttons if user is not logged in */}
+              <button className="btn" type='button'>
+                <Link to='/register'>Register</Link>
+              </button>
+              <button className="btn" type='button'>
+                <Link to='/login'>Login</Link>
+              </button>
+            </>
           ) : (
             // Render logout button if user is logged in
             <button className="btn" type='button' onClick={() => {
-              auth.logout();  // Call logout() method from auth utility on button click
+              auth.logout(); // Call logout() method from auth utility on button click
+              setLoginCheck(false); // Update loginCheck state after logout
             }}>Logout</button>
           )
         }
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Navbar;
