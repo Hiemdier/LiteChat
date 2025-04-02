@@ -1,44 +1,37 @@
 // As a general comment, this component is responsible for the retrieval of messages from the given active chatroom.
 
-import { useState, useEffect, useLayoutEffect, FormEvent, ChangeEvent } from "react";
+import { useState, ChangeEvent } from "react";
 import type { MessageData } from "../interfaces/MessageData";
-import { retrieveMessages, postNewMessage } from "../api/msgAPI";
-// import { io } from "socket.io-client";
-
-// const socket = io("http://localhost:")
 
 interface ChatroomProps {
     messages: MessageData[];
     chatId: number,
-    updateMessages: any
+    sendMessage: any
 }
 
-const Chatroom: React.FC<ChatroomProps> = ({ messages, chatId, updateMessages }) => {
+const Chatroom: React.FC<ChatroomProps> = ({ messages, chatId, sendMessage }) => {
 
     const [draftMessage, setDraftMessage] = useState<string>('');
 
-    const sendMessage = async (chatId: number, content: string) => {
-        console.log(`Sending message to chatroom ${chatId}: ${content}`);
-        const data = await postNewMessage(chatId, content);
-
-        if (data) {
-            updateMessages(await retrieveMessages(chatId));
-        }
-        return data;
+    // This method needs to get modified to align with our socket usage...
+    const handleSendMessage = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        sendMessage(draftMessage, chatId);
+        setDraftMessage("");
     };
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+    // const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    //     event.preventDefault();
 
-        if (!draftMessage.trim()) return; 
+    //     if (!draftMessage.trim()) return; 
 
-        try {
-            await sendMessage(chatId, draftMessage);
-            setDraftMessage("");
-        } catch (error) {
-            console.error("Failed to send message: ", error);
-        }
-    }
+    //     try {
+    //         await sendMessage(chatId, draftMessage);
+    //         setDraftMessage("");
+    //     } catch (error) {
+    //         console.error("Failed to send message: ", error);
+    //     }
+    // }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { value } = e.target;
@@ -56,7 +49,7 @@ const Chatroom: React.FC<ChatroomProps> = ({ messages, chatId, updateMessages })
 
     {/* Allow the user to input messages to add to the chatroom */}
     {chatId > 0 && <div className='form-container'>
-        <form className='form login-form grid grid-cols-3 flex items-center' onSubmit={handleSubmit}>
+        <form className='form login-form grid grid-cols-3 flex items-center' onSubmit={handleSendMessage}>
         {/* Message input field */}
         <div className="form-group col-span-2">
           <input 
