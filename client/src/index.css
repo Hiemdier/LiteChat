@@ -1334,6 +1334,14 @@ form [type='radio'] {
   max-width: 100%;
 }
 
+/* Custom clases */
+.lc-navbar {
+  background-image: url("/gradient.png"); 
+  background-size: "cover";
+  background-position: "center"; 
+  height: "100px" 
+}
+
 /* col-sm */
 @media screen and (min-width: 640px) {
   .col-sm-auto {
