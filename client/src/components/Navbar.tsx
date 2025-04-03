@@ -29,12 +29,14 @@ const Navbar = () => {
           !loginCheck ? (
             <>
               {/* Render register and login buttons if user is not logged in */}
-              <button className="btn" type='button'>
-                <Link to='/register'>Register</Link>
-              </button>
-              <button className="btn" type='button'>
-                <Link to='/login'>Login</Link>
-              </button>
+              <div className='grid grid-cols-2 gap-3'>
+                <button className="btn" type='button'>
+                  <Link to='/register'>Register</Link>
+                </button>
+                <button className="btn" type='button'>
+                  <Link to='/login'>Login</Link>
+                </button>
+              </div>
             </>
           ) : (
             // Render logout button if user is logged in
