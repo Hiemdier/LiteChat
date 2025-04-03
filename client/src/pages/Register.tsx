@@ -59,9 +59,9 @@ const Register = () => {
     return (
         <div className='form-container'>
             <form className='form login-form' onSubmit={handleSubmit}>
-                <h1>Register</h1>
+                <h1 className='text-white'>Register</h1>
                 <div className="form-group">
-                    <label>Username</label>
+                    <label className='text-white'>Username</label>
                     <input
                         className="form-input"
                         type="text"
@@ -74,7 +74,7 @@ const Register = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label>Email</label>
+                    <label className='text-white'>Email</label>
                     <input
                         className="form-input"
                         type="email"
@@ -87,7 +87,7 @@ const Register = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label>Password</label>
+                    <label className='text-white'>Password</label>
                     <input
                         className="form-input"
                         type="password"
@@ -100,7 +100,7 @@ const Register = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label>Confirm Password</label>
+                    <label className='text-white'>Confirm Password</label>
                     <input
                         className="form-input"
                         type="password"

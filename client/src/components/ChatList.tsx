@@ -27,15 +27,15 @@ const ChatList: React.FC<ChatListProps> = ({ chatrooms, updateMessages, updateAc
 
     return (
         <>
-            <div className="h-192 max-h-192 overflow-auto p-3">
+            <div className="h-192 max-h-192 overflow-auto p-1">
                 {chatrooms && chatrooms.map((chatroom) => (
                 // TODO, we need to make this component populate the chat when we click on it.
-                <div className="row align-center mb-5 bg-gray-400 p-6 rounded-lg outline outline-black" onClick={() => fetchMessages(chatroom.id as number)} key={chatroom.id}>
-                    <div className="col-md-6">
-                        <h3>{chatroom.name}</h3>
+                <div className="col align-center mb-5 bg-gray-400 p-6 rounded-lg outline outline-black" onClick={() => fetchMessages(chatroom.id as number)} key={chatroom.id}>
+                    <div className="row-md-4">
+                        <h4 className='font-bold'>{chatroom.name}</h4>
                     </div>
-                    <div className="col-md-6">
-                        <h4>Owner: {chatroom.ownerDetails.username}</h4>
+                    <div className="row-md-4">
+                        <p><span className='font-bold'>Created by:</span> {chatroom.ownerDetails.username}</p>
                     </div>
                 </div>
             ))}</div>

@@ -11,7 +11,7 @@
 import { useState, useEffect, useLayoutEffect } from "react";
 
 // API functions
-import { retrieveChatrooms} from "../api/chatAPI";
+import { retrieveChatrooms, retrieveChatroomsById } from "../api/chatAPI";
 
 // Authenticate calls to api routes...
 import auth from '../utils/auth';
@@ -35,7 +35,7 @@ const ChatPage = () => {
     // TODO: I want the ability to post chat messages to a chatroom
     const [chatrooms, setChatrooms] = useState<ChatroomData[]>([]);
     const [activeChatroom, setActiveChatroom] = useState<number>(-1);
-    const [activeChatName] = useState<string>('');
+    const [activeChatName, setActiveChatName] = useState<string>('');
     const [messages, setMessages] = useState<MessageData[]>([]);
     const [error, setError] = useState(false);
     const [loginCheck, setLoginCheck] = useState(false);
@@ -137,6 +137,19 @@ const ChatPage = () => {
         return <ErrorPage />;
     };
 
+    useEffect(() => {
+        const fetchChatroomName = async () => {
+            if (activeChatroom > 0) {
+                const name = await retrieveChatroomsById(activeChatroom);
+                setActiveChatName(name?.name); 
+            }
+        };
+    
+        fetchChatroomName();
+
+    }, [activeChatroom]);
+    
+
     return (
         <div className="w-screen min-h-screen p-6 border border-black">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -151,11 +164,15 @@ const ChatPage = () => {
                     </div>
                 </div>
 
-                <div className="bg-white p-6 outline outline-black md:col-span-2">
+                <div className="bg-white outline outline-black md:col-span-2 !p-0 mb-2">
                     {/* Display messages from the active chatroom */}
-                    <h2 className="text-xl font-bold text-gray-800">{activeChatName}</h2>
-                    <Chatroom messages={messages} sendMessage={sendMessage} chatId={activeChatroom}/>
-                    <p>Socket connected: {isConnected ? "✅ Yes" : "❌ No"}</p>
+                    <div className="bg-gray-300 outline outline-black p-4">
+                        <h1 className="text-xl text-center font-bold text-gray-800">{activeChatName ? activeChatName : <h1>No Chatroom selected</h1>}</h1>
+                    </div>
+                    <div className="p-3">
+                        <Chatroom messages={messages} sendMessage={sendMessage} chatId={activeChatroom}/>
+                        <p className=''>Receiving real-time updates: {isConnected ? "✅ Yes" : "❌ No"}</p>
+                    </div>
                 </div>
             </div>
         </div>
