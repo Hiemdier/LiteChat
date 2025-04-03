@@ -30,7 +30,6 @@ import socket from '../utils/socket.js';
 
 const ChatPage = () => {
     // TODO: I want the ability to post chat messages to a chatroom
-    
     const [chatrooms, setChatrooms] = useState<ChatroomData[]>([]);
     const [activeChatroom, setActiveChatroom] = useState<number>(-1);
     const [activeChatName] = useState<string>('');
@@ -111,7 +110,6 @@ const ChatPage = () => {
             setLoginCheck(true);
         } else {
             setLoginCheck(false);
-            window.location.assign('/login')
         }
     };
 

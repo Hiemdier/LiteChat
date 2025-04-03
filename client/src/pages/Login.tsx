@@ -6,7 +6,7 @@ import { login } from "../api/authAPI";  // Import the login function from the A
 import { UserLogin } from "../interfaces/UserLogin";  // Import the interface for UserLogin
 
 const Login = () => {
-  // const navigate = useNavigate();
+ // const navigate = useNavigate();
   // State to manage the login form data
   const [loginData, setLoginData] = useState<UserLogin>({
     username: '',
@@ -30,8 +30,8 @@ const Login = () => {
       const data = await login(loginData);
       // If login is successful, call Auth.login to store the token in localStorage
       Auth.login(data.token);
-      // navigate('/chat');
-      window.location.href = "/chat";
+       //navigate('/');
+      window.location.href = "/";
     } catch (err) {
       console.error('Failed to login', err);  // Log any errors that occur during login
     }
