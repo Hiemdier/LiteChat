@@ -28,7 +28,10 @@ import { MessageData } from "../interfaces/MessageData";
 // For implementation with the socket
 import socket from '../utils/socket.js';
 
+import { useNavigate } from 'react-router-dom';
+
 const ChatPage = () => {
+    const navigate = useNavigate();
     // TODO: I want the ability to post chat messages to a chatroom
     const [chatrooms, setChatrooms] = useState<ChatroomData[]>([]);
     const [activeChatroom, setActiveChatroom] = useState<number>(-1);
@@ -110,6 +113,8 @@ const ChatPage = () => {
             setLoginCheck(true);
         } else {
             setLoginCheck(false);
+            navigate('/login');
+            window.location.reload();
         }
     };
 
