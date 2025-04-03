@@ -7,6 +7,7 @@
  */
 
 @import "tailwindcss";
+/* @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap'); */
 
  html {
   line-height: 1.15;
@@ -1332,6 +1333,29 @@ form [type='radio'] {
 .col-12 {
   flex: 0 0 100%;
   max-width: 100%;
+}
+
+/* Custom clases */
+#lc-navbar {
+  background-image: url("/gradient.png"); 
+  background-color: #1bbc9b;
+  background-size: 100% 100%;
+  background-position: center; 
+}
+
+.lc-bg {
+  background-image: url("/gradient.png"); 
+  background-size: cover;
+  background-position: cover; 
+  height: "200px" 
+}
+
+.lc-navbar-text {
+  font-family: "Comfortaa", sans-serif;
+}
+
+#foo {
+  padding: 0;
 }
 
 /* col-sm */

@@ -30,7 +30,8 @@ const Login = () => {
       const data = await login(loginData);
       // If login is successful, call Auth.login to store the token in localStorage
       Auth.login(data.token);
-      navigate('/chat');
+      // navigate('/chat');
+      window.location.href = "/chat";
     } catch (err) {
       console.error('Failed to login', err);  // Log any errors that occur during login
     }
@@ -39,10 +40,10 @@ const Login = () => {
   return (
     <div className='form-container'>
       <form className='form login-form' onSubmit={handleSubmit}>
-        <h1>Login</h1>
+        <h1 className='text-white'>Login</h1>
         {/* Username input field */}
         <div className="form-group">
-          <label>Username</label>
+          <label className='text-white'>Username</label>
           <input 
             className="form-input"
             type='text'
@@ -54,7 +55,7 @@ const Login = () => {
         </div>
         {/* Password input field */}
         <div className="form-group">
-          <label>Password</label>
+          <label className='text-white'>Password</label>
           <input 
             className="form-input"
             type='password'
