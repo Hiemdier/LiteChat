@@ -41,7 +41,6 @@ app.get("*", (_req, res) => {
   res.sendFile(path.resolve(clientPath, 'index.html'));
 });
 
-
 // io stuffs
 setupSocket(io);
 

@@ -13,6 +13,8 @@ const Login = () => {
     password: ''
   });
 
+  const [errMessage, setErrMessage] = useState<string>('');
+
   // Handle changes in the input fields
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -33,6 +35,10 @@ const Login = () => {
       navigate('/');
       window.location.reload();
     } catch (err) {
+      setErrMessage('Failed to login!');
+      setTimeout(() => {
+        setErrMessage('');
+      }, 3000);
       console.error('Failed to login', err);  // Log any errors that occur during login
     }
   };
@@ -41,6 +47,7 @@ const Login = () => {
     <div className='form-container'>
       <form className='form login-form' onSubmit={handleSubmit}>
         <h1 className='text-white'>Login</h1>
+        <p className='text-white'>{errMessage}</p>
         {/* Username input field */}
         <div className="form-group">
           <label className='text-white'>Username</label>

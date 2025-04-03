@@ -5,4 +5,5 @@ export interface MessageData {
       username: string
     };
     chatId: number | null;
+    createdAt: string
   }
