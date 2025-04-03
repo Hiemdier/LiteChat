@@ -5,6 +5,7 @@ import { Sequelize } from "sequelize";
 
  const router = Router();
 
+
 // GET /api/chatrooms/history - Get rooms the user is a member of
 router.get("/chatrooms/history", authenticateToken, async (req, res) => {
     try {

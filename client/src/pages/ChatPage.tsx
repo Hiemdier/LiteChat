@@ -50,6 +50,11 @@ const ChatPage = () => {
         // Debug: Log socket connection state
         console.log("🔄 Checking socket connection...");
         console.log("📡 Socket connected:", socket.connected);
+        
+        if (!socket.connected) {
+            console.log("🔄 Attempting to reconnect socket...");
+            socket.connect();
+        };
 
         const handleConnect = () => {
             console.log("✅ Socket connected:", socket.id);
@@ -130,17 +135,20 @@ const ChatPage = () => {
     };
 
     return (
-        <div className="w-screen min-h-screen p-6 border border-red-500">
+        <div className="w-screen min-h-screen p-6 border border-black">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-white p-6 rounded-lg outline outline-black md:col-span-1">
-                    <h2 className="text-xl font-bold text-gray-800">Chatrooms</h2>
-                    <p className="text-gray-600 mt-4">Click on a chatroom to join it!</p>
+                <div className="bg-white outline outline-black md:col-span-1 !p-0" >
+                    <div className="bg-gray-300 outline outline-black p-4">
+                        <h1 className="text-xl text-center font-bold text-gray-800">Chatrooms</h1>
+                    </div>
                     {/* TODO: Clicking on the below should populate the chat on the right */}
                     {/* We can make elements do certain things when we click on them, but we should review the exercises first to get a feel for how this works...*/}
-                    <ChatList chatrooms={chatrooms} updateMessages={setMessages} updateActiveChatroom={setActiveChatroom}/>
+                    <div className="bg-gray p-3">
+                        <ChatList chatrooms={chatrooms} updateMessages={setMessages} updateActiveChatroom={setActiveChatroom}/>
+                    </div>
                 </div>
 
-                <div className="bg-white p-6 rounded-lg outline outline-black md:col-span-2">
+                <div className="bg-white p-6 outline outline-black md:col-span-2">
                     {/* Display messages from the active chatroom */}
                     <h2 className="text-xl font-bold text-gray-800">{activeChatName}</h2>
                     <Chatroom messages={messages} sendMessage={sendMessage} chatId={activeChatroom}/>
