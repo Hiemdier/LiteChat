@@ -6,7 +6,7 @@ import { login } from "../api/authAPI";  // Import the login function from the A
 import { UserLogin } from "../interfaces/UserLogin";  // Import the interface for UserLogin
 
 const Login = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   // State to manage the login form data
   const [loginData, setLoginData] = useState<UserLogin>({
     username: '',
