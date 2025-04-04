@@ -93,7 +93,9 @@ const ChatPage = () => {
 
         // Listen for incoming messages
         const handleReceiveMessage = (message: MessageData) => {
-            setMessages((prev) => [...prev, message]);
+            if (message.chatId === activeChatroom) {
+                setMessages((prev) => [...prev, message]);
+            }
         };
         socket.on("receiveMessage", handleReceiveMessage);
 
